@@ -6,11 +6,11 @@ class Device(models.Model):
     name=models.CharField(max_length=50)
 
 class TemperatureReading(models.Model):
-    device=models.ForeignKey(Device,on_delete=models.CASCADE)
+    uid=models.ForeignKey(Device,on_delete=models.CASCADE,to_field='uid')
     temperature=models.FloatField()
     time=models.DateTimeField() 
 
 class HumidityReading(models.Model):
-    device=models.ForeignKey(Device,on_delete=models.CASCADE)
+    uid=models.ForeignKey(Device,on_delete=models.CASCADE,to_field='uid')
     humidity=models.FloatField()
     time=models.DateTimeField()
