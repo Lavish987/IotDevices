@@ -1,6 +1,6 @@
 from django.urls import path,include
 from rest_framework import routers
-from .views import DeviceViewSet,TemperaturereadingViewSet,HumidityreadingViewSet
+from .views import DeviceViewSet,TemperaturereadingViewSet,HumidityreadingViewSet,Graph_View
 from IotApp.views import Readings
 from . import views
 app_name='IotApp'
@@ -10,7 +10,7 @@ router.register(r'api/temperature',TemperaturereadingViewSet)
 router.register(r'api/humidity',HumidityreadingViewSet)
 urlpatterns=[
     path('api/devices/<str:uid>/readings/<str:parameter>/',Readings.as_view()),
-    path('devices-graph/',views.Graph),
+    path('devices-graph/',Graph_View.as_view()),
     path('',include(router.urls)),  
     
 
