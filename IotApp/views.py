@@ -4,7 +4,6 @@ from rest_framework import viewsets,status,generics
 from django.http import HttpResponse
 from .models import Device,TemperatureReading,HumidityReading
 from .serializers import DeviceSerializer,HumiditySerializer,TemperatureSerializer
-from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils import timezone as django_timezone
 import matplotlib
@@ -28,7 +27,7 @@ class HumidityreadingViewSet(viewsets.ModelViewSet):
     queryset=HumidityReading.objects.all()
     serializer_class=HumiditySerializer
 
-class Graph_View(generics.ListAPIView):
+class GraphAPIView(generics.ListAPIView):
     def list(self,request):
         uid=self.request.query_params.get('uid')
         temperature_data = TemperatureReading.objects.filter(uid=uid)
@@ -61,9 +60,8 @@ class Graph_View(generics.ListAPIView):
         return render(request, 'IotApp/graph.html', {'img_data': img_data})
         
 
-class Readings(generics.ListAPIView):   
+class ReadingAPIView(generics.ListAPIView):   
     def list(self,request,uid,parameter):
-        
         start_on = self.request.query_params.get('start_on')
         end_on = self.request.query_params.get('end_on')
         
@@ -81,9 +79,10 @@ class Readings(generics.ListAPIView):
                 serializer_class = TemperatureSerializer
         elif parameter == 'humidity':
                 model = HumidityReading
-                serializer_class = HumiditySerializer
+                serializer_class =HumiditySerializer
         else:
             return HttpResponse({'error': 'Invalid parameter'}, status=status.HTTP_400_BAD_REQUEST)
+        
         #print(start_date_object)
         #print(end_date_object)
         data = model.objects.filter(
